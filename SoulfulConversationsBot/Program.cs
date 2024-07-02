@@ -30,7 +30,7 @@ client.UseInteractivity(new()
 
 client.Ready += ClientReadyAsync;
 commands.RegisterCommands<RepeatCommand>();
-commands.RegisterCommands<ToogleRoleCommand>();
+commands.RegisterCommands<ToggleRoleCommand>();
 
 await client.ConnectAsync();
 await Task.Delay(-1);

@@ -5,7 +5,7 @@ using SoulfulConversationsBot.Extensions;
 
 namespace SoulfulConversationsBot.Commands
 {
-    public class ToogleRoleCommand : BaseCommandModule
+    public class ToggleRoleCommand : BaseCommandModule
     {
         [Command("roles")]
         public async Task ExecuteAsync(CommandContext context)
