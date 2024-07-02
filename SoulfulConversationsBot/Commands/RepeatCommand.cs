@@ -6,9 +6,9 @@ namespace SoulfulConversationsBot.Commands
     public class RepeatCommand : BaseCommandModule
     {
         [Command("repeat")]
-        public async Task ExecuteAsync(CommandContext ctx, params string[] data)
+        public async Task ExecuteAsync(CommandContext context, params string[] data)
         {
-            await ctx.Channel.SendMessageAsync(string.Join(" ", data));
+            await context.Channel.SendMessageAsync(string.Join(" ", data));
         }
     }
 }

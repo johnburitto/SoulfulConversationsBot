@@ -2,6 +2,7 @@
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.EventArgs;
+using DSharpPlus.Interactivity.Extensions;
 using SoulfulConversationsBot.Commands;
 
 // TODO: Окремий клас для конфігруації бота та команд. Зробити конфігуратор
@@ -22,8 +23,14 @@ var cammandsNextConfiguration = new CommandsNextConfiguration()
 var client = new DiscordClient(configuration);
 var commands = client.UseCommandsNext(cammandsNextConfiguration);
 
+client.UseInteractivity(new()
+{
+    Timeout = TimeSpan.FromMinutes(2)
+});
+
 client.Ready += ClientReadyAsync;
 commands.RegisterCommands<RepeatCommand>();
+commands.RegisterCommands<ToogleRoleCommand>();
 
 await client.ConnectAsync();
 await Task.Delay(-1);
