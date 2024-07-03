@@ -9,11 +9,13 @@ using SoulfulConversationsBot.Commands;
 var configuration = new DiscordConfiguration()
 {
     Intents = DiscordIntents.All, 
-    Token = "MTI1NzYwODE3NTU3OTAzNzc2Ng.GBrGmt.4sON2rmFpOE7VOdEGJ41YvTF2IoN-OqsVc4KVE",
+    // NOTE: do not upload the token to Git for the security sake).
+    // You can keep it in a file that is listed in .gitignore instead
+    Token = "MTI1NzYwODE3NTU3OTAzNzc2Ng.GBrGmt.4sON2rmFpOE7VOdEGJ41YvTF2IoN-OqsVc4KVE", 
     TokenType = TokenType.Bot,
     AutoReconnect = true
 };
-var cammandsNextConfiguration = new CommandsNextConfiguration()
+var commandsNextConfiguration = new CommandsNextConfiguration()
 {
     StringPrefixes = ["!"],
     EnableMentionPrefix = true,
@@ -21,7 +23,7 @@ var cammandsNextConfiguration = new CommandsNextConfiguration()
     EnableDefaultHelp = false
 };
 var client = new DiscordClient(configuration);
-var commands = client.UseCommandsNext(cammandsNextConfiguration);
+var commands = client.UseCommandsNext(commandsNextConfiguration);
 
 client.UseInteractivity(new()
 {
