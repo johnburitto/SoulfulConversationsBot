@@ -1,3 +1,14 @@
 ﻿{
-  "token": "MTI1NzYwODE3NTU3OTAzNzc2Ng.GBrGmt.4sON2rmFpOE7VOdEGJ41YvTF2IoN-OqsVc4KVE"
+  "DiscordConfiguration": {
+    "Intents": "DiscordIntents.All",
+    "Token": "token",
+    "TokenType": "TokenType.Bot",
+    "AutoReconnect": true
+  },
+  "CommandsNextConfiguration": {
+    "StringPrefixes": [ "!" ],
+    "EnableMentionPrefix": true,
+    "EnableDms": true,
+    "EnableDefaultHelp": true
+  }
 }

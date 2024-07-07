@@ -3,15 +3,17 @@ using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.EventArgs;
 using DSharpPlus.Interactivity.Extensions;
+using Microsoft.Extensions.Configuration;
 using SoulfulConversationsBot.Commands;
+using SoulfulConversationsBot.Configuration;
 
 // TODO: Окремий клас для конфігруації бота та команд. Зробити конфігуратор
 var configuration = new DiscordConfiguration()
 {
-    Intents = DiscordIntents.All, 
+    Intents = DiscordIntents.All,
     // NOTE: do not upload the token to Git for the security sake).
     // You can keep it in a file that is listed in .gitignore instead
-    Token = "MTI1NzYwODE3NTU3OTAzNzc2Ng.GBrGmt.4sON2rmFpOE7VOdEGJ41YvTF2IoN-OqsVc4KVE", 
+    Token = "MTI1NzYwODE3NTU3OTAzNzc2Ng.GBrGmt.4sON2rmFpOE7VOdEGJ41YvTF2IoN-OqsVc4KVE",
     TokenType = TokenType.Bot,
     AutoReconnect = true
 };
@@ -41,3 +43,5 @@ static Task ClientReadyAsync(DiscordClient sender, ReadyEventArgs args)
 {
     return Task.CompletedTask;
 }
+
+//SoulfulConversationsBot.Configuration.ConfigurationManager.ConfigureBot();
