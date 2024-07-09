@@ -12,7 +12,7 @@ var configuration = new DiscordConfiguration()
     TokenType = TokenType.Bot,
     AutoReconnect = true
 };
-var cammandsNextConfiguration = new CommandsNextConfiguration()
+var commandsNextConfiguration = new CommandsNextConfiguration()
 {
     StringPrefixes = ["!"],
     EnableMentionPrefix = true,
@@ -20,7 +20,7 @@ var cammandsNextConfiguration = new CommandsNextConfiguration()
     EnableDefaultHelp = false
 };
 var client = new DiscordClient(configuration);
-var commands = client.UseCommandsNext(cammandsNextConfiguration);
+var commands = client.UseCommandsNext(commandsNextConfiguration);
 
 client.UseInteractivity(new()
 {
