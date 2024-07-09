@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
+using DSharpPlus.Interactivity.Extensions;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -27,56 +28,50 @@ namespace SoulfulConversationsBot.Configuration
                 {
                     _configuration = new ConfigurationBuilder()
                         .SetBasePath(Directory.GetCurrentDirectory())
-                        .AddJsonFile("config.json", optional:false)
+                        .AddJsonFile("appsettings.json", optional:false)
                         .Build();
                 }
             }
             return _configuration;
         }
 
-        public static void ConfigureBot()
+        public static DiscordClient ConfigureDiscordClient()
         {
             IServiceCollection services = new ServiceCollection();
             services.Configure<DiscordConfiguration>(options => Configuration.GetSection("DiscordConfiguration").Bind(options));
             services.Configure<CommandsNextConfiguration>(options => Configuration.GetSection("CommandsNextConfiguration").Bind(options));
+
             
             IServiceProvider serviceProvider = services.BuildServiceProvider();
 
-            // Okay, this is clearly wrong:
-            //var client = new DiscordClient(serviceProvider.GetService<IOptions<DiscordConfiguration>>());
-            //Console.WriteLine("token: " + services.);
+            DiscordConfiguration tmp = serviceProvider.GetService<IOptions<DiscordConfiguration>>()!.Value;
+
+            var discordClient = new DiscordClient(tmp);
+            var commands = discordClient.UseCommandsNext(serviceProvider.GetService<IOptions<CommandsNextConfiguration>>()!.Value);
+
+            discordClient.UseInteractivity(new()
+            {
+                Timeout = TimeSpan.FromMinutes(2)
+            });
+
+            discordClient.Ready += ClientReadyAsync ;
+
+            return discordClient;
+            //await discordClient.ConnectAsync();
+            //await Task.Delay(-1);
+
+            //var assembly = AppDomain.CurrentDomain.GetAssemblies();
+
+            // TODO refactor config
+            // explore assembly object and exctract command data;
+            // create a temporary manual configuration for the commands;
+            // push changes
         }
 
-
-
-
-        //    public DiscordConfiguration discordConfiguration = new DiscordConfiguration()
-        //    {
-        //        Intents = DiscordIntents.All,
-        //        // NOTE: do not upload the token to Git for the security sake).
-        //        // You can keep it in a file that is listed in .gitignore instead
-        //        Token = jsonData.token,
-        //        TokenType = TokenType.Bot,
-        //        AutoReconnect = true
-        //    };
-
-        //    public CommandsNextConfiguration commandsNextConfiguration = new CommandsNextConfiguration()
-        //    {
-        //        StringPrefixes = ["!"],
-        //        EnableMentionPrefix = true,
-        //        EnableDms = true,
-        //        EnableDefaultHelp = false
-        //    };
+        private static Task ClientReadyAsync (DiscordClient sender, DSharpPlus.EventArgs.ReadyEventArgs args)
+        {
+            return Task.CompletedTask;
+        }
     }
 }
 
-//IConfiguration
-//_locked
-// GetConfiguration() : if configuration is null: build configuration
-
-// configure app: create all the objects etc.
-
-// call in main: configurationManager.configureApp; var bot: createBot()
-
-
-// TODO read about IOptions
