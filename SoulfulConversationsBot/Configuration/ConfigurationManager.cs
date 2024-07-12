@@ -10,6 +10,7 @@ using DSharpPlus.Interactivity.Extensions;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using System.Reflection;
 
 namespace SoulfulConversationsBot.Configuration
 {
@@ -71,6 +72,14 @@ namespace SoulfulConversationsBot.Configuration
         private static Task ClientReadyAsync (DiscordClient sender, DSharpPlus.EventArgs.ReadyEventArgs args)
         {
             return Task.CompletedTask;
+        }
+
+        public static List<Type> GetCommands()
+        {
+            return Assembly.GetExecutingAssembly().GetTypes()
+                .Where(t => String.Equals(t.Namespace, "SoulfulConversationsBot.Commands", StringComparison.Ordinal))
+                .ToList();
+            // NOTE: you can get the name of the class (command) by accessing the Type.Name attribute
         }
     }
 }
