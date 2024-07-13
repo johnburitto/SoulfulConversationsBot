@@ -1,7 +1,8 @@
 ﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Interactivity.Extensions;
-using SoulfulConversationsBot.Commands;
+using System.Data;
+using System.Reflection;
 
 namespace SoulfulConversationsBot.Bot
 {
@@ -24,15 +25,25 @@ namespace SoulfulConversationsBot.Bot
         {
             _commands = _bot?.UseCommandsNext(configuration ?? throw new ArgumentNullException(nameof(configuration)));
 
-            // TODO: This through Assembly
-            _commands?.RegisterCommands<RepeatCommand>();
-            _commands?.RegisterCommands<AddRoleCommand>();
-            _commands?.RegisterCommands<ToggleRoleCommand>();
+            List<Type> commandList = GetCommands();
+
+            foreach (Type command in commandList)
+            {
+                _commands?.RegisterCommands(command);
+            }
+
         }
 
         public async Task Start()
         {
             await _bot!.ConnectAsync();
+        }
+
+        private List<Type> GetCommands()
+        {
+            return Assembly.GetExecutingAssembly().GetTypes()
+                .Where(t => String.Equals(t.Namespace, "SoulfulConversationsBot.Commands", StringComparison.Ordinal) && !t.IsNested)
+                .ToList();
         }
     }
 }
