@@ -42,7 +42,7 @@ namespace SoulfulConversationsBot.Bot
         private List<Type> GetCommands()
         {
             return Assembly.GetExecutingAssembly().GetTypes()
-                .Where(t => String.Equals(t.Namespace, "SoulfulConversationsBot.Commands", StringComparison.Ordinal) && !t.IsNested)
+                .Where(t => String.Equals(t.Namespace, "SoulfulConversationsBot.Commands", StringComparison.Ordinal) && t.Name.EndsWith("Command"))
                 .ToList();
         }
     }

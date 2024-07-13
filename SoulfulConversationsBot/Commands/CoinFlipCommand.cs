@@ -3,9 +3,10 @@ using DSharpPlus.CommandsNext.Attributes;
 
 namespace SoulfulConversationsBot.Commands
 {
-    public class CoinFlip : BaseCommandModule
+    public class CoinFlipCommand : BaseCommandModule
     {
         private readonly Random _rng = new Random();
+
         [Command("coinflip")]
         public async Task ExecuteAsync(CommandContext context)
         {
