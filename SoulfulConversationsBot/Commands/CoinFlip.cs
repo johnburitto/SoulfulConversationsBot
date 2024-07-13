@@ -12,11 +12,11 @@ namespace SoulfulConversationsBot.Commands
             string result;
             if (_rng.Next(2) == 0)
             {
-                result = "Орел";
+                result = "**орел**";
             }
             else
             {
-                result = "Решка";
+                result = "**решка**";
             }
             await context.Channel.SendMessageAsync("Результат: " + result);
         }
