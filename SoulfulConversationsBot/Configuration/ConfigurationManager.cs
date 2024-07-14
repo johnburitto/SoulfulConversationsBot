@@ -64,6 +64,11 @@ namespace SoulfulConversationsBot.Configuration
             ServiceCollection.Configure<CommandsConfiguration>(options => Configuration.GetSection("CommandsConfiguration").Bind(options));
         }
 
+        public static T? GetValue<T>(string section)
+        {
+            return Configuration.GetValue<T>(section);
+        }
+
         public static IOptions<T>? GetOptions<T>() where T : class
         {
             return ServiceProvider.GetService<IOptions<T>>();
