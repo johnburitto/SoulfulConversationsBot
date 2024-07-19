@@ -62,6 +62,7 @@ namespace SoulfulConversationsBot.Configuration
         {
             ServiceCollection.Configure<BotConfigurationDto>(options => Configuration.GetSection("BotConfigurationDto").Bind(options));
             ServiceCollection.Configure<CommandsConfiguration>(options => Configuration.GetSection("CommandsConfiguration").Bind(options));
+            ServiceCollection.Configure<ImagesDto>(options => Configuration.GetSection("ImagesDto").Bind(options));
         }
 
         public static T? GetValue<T>(string section)
