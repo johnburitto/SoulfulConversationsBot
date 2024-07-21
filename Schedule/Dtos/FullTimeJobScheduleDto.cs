@@ -1,4 +1,6 @@
-﻿namespace Schedule.Dtos
+﻿using Schedule.Entities;
+
+namespace Schedule.Dtos
 {
     public class FullTimeJobScheduleDto
     {
