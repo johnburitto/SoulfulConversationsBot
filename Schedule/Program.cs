@@ -1,5 +1,4 @@
 ﻿using Schedule.Schedule;
-using System.Text.Json;
 
 var scheduler = new Scheduler();
 var schedule = scheduler.GetFullTimeJobShedule(new()
@@ -10,4 +9,4 @@ var schedule = scheduler.GetFullTimeJobShedule(new()
     MaybeHours = "00:00-07:00"
 });
 
-Console.WriteLine(JsonSerializer.Serialize(schedule));
+Console.WriteLine(schedule.Fancy());

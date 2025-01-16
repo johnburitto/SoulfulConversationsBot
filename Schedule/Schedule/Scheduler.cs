@@ -64,7 +64,7 @@ namespace Schedule.Schedule
             {
                 return new()
                 {
-                    HourString = hourIterator.ToString(),
+                    HourString = hourIterator.ToString(@"hh\:mm"),
                     Availability = Availability.Free
                 };
             }
@@ -72,7 +72,7 @@ namespace Schedule.Schedule
             {
                 return new()
                 {
-                    HourString = hourIterator.ToString(),
+                    HourString = hourIterator.ToString(@"hh\:mm"),
                     Availability = Availability.Busy
                 };
             }
@@ -80,7 +80,7 @@ namespace Schedule.Schedule
             {
                 return new()
                 {
-                    HourString = hourIterator.ToString(),
+                    HourString = hourIterator.ToString(@"hh\:mm"),
                     Availability = Availability.Maybe
                 };
             }
