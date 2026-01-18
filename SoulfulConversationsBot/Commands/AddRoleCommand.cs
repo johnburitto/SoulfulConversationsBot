@@ -1,23 +1,42 @@
-﻿using DSharpPlus.CommandsNext;
+﻿using DSharpPlus.Entities;
+using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.Entities;
 using DSharpPlus.Interactivity.Extensions;
+
 using SoulfulConversationsBot.Utils;
 
 namespace SoulfulConversationsBot.Commands
 {
+	/// <summary>
+	/// Add role command.
+	/// </summary>
 	public class AddRoleCommand : BaseCommandModule
 	{
-		private readonly JsonDictionaryManager<string, DiscordRole> _manager = new JsonDictionaryManager<string, DiscordRole>("roles.json");
+		#region Private Fields
 
+		/// <summary>
+		/// Json dictionary manager.
+		/// </summary>
+		private readonly JsonDictionaryManager<string, DiscordRole> _manager = new("roles.json");
+
+		#endregion
+
+		#region Public Methods
+
+		/// <summary>
+		/// Executes the command.
+		/// </summary>
+		/// <param name="context">Context.</param>
+		/// <param name="registerRole">Indicates whether register role or not.</param>
+		/// <param name="roleNames">Role names.</param>
 		[Command("addrole")]
-		public async Task ExecuteAsync(CommandContext context, bool registerRole = true, params string[] roleName)
+		public async Task ExecuteAsync(CommandContext context, bool registerRole = true, params string[] roleNames)
 		{
 			var interactivity = context.Client.GetInteractivity();
 
 			if (!registerRole)
 			{
-				var role = context.Guild.Roles.Where(_ => _.Value.Name == string.Join(" ", roleName)).Select(_ => _.Value).FirstOrDefault();
+				var role = context.Guild.Roles.Where(_ => _.Value.Name == string.Join(" ", roleNames)).Select(_ => _.Value).FirstOrDefault();
 				var embedMessage = new DiscordEmbedBuilder()
 				{
 					Title = "Відреагуйте емодзі, яке відповідає ролі",
@@ -33,5 +52,7 @@ namespace SoulfulConversationsBot.Commands
 				}
 			}
 		}
+
+		#endregion
 	}
 }

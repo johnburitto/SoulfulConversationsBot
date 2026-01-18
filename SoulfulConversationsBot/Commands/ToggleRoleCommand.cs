@@ -1,16 +1,33 @@
-﻿using DSharpPlus.CommandsNext;
+﻿using DSharpPlus.Entities;
+using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.Entities;
 using DSharpPlus.Interactivity.Extensions;
-using SoulfulConversationsBot.Extensions;
+
 using SoulfulConversationsBot.Utils;
+using SoulfulConversationsBot.Extensions;
 
 namespace SoulfulConversationsBot.Commands
 {
+	/// <summary>
+	/// Toogle role command.
+	/// </summary>
 	public class ToggleRoleCommand : BaseCommandModule
 	{
-		private readonly JsonDictionaryManager<string, DiscordRole> _manager = new JsonDictionaryManager<string, DiscordRole>("roles.json");
+		#region Private Fields
 
+		/// <summary>
+		/// Json dictionary manager.
+		/// </summary>
+		private readonly JsonDictionaryManager<string, DiscordRole> _manager = new("roles.json");
+
+		#endregion
+
+		#region Public Methods
+
+		/// <summary>
+		/// Executes the command.
+		/// </summary>
+		/// <param name="context">Context.</param>
 		[Command("roles")]
 		public async Task ExecuteAsync(CommandContext context)
 		{
@@ -59,5 +76,7 @@ namespace SoulfulConversationsBot.Commands
 				await context.Channel.DeleteMessageAsync(message);
 			}
 		}
+
+		#endregion
 	}
 }
