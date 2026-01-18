@@ -3,6 +3,7 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 
 using SoulfulConversationsBot.Dto;
+using SoulfulConversationsBot.Enums;
 using SoulfulConversationsBot.Configuration;
 
 namespace SoulfulConversationsBot.Commands

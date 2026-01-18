@@ -16,7 +16,7 @@ namespace SoulfulConversationsBot.Commands
 		/// <param name="context">Context.</param>
 		/// <param name="data">Data.</param>
 		[Command("repeat")]
-		public static async Task ExecuteAsync(CommandContext context, params string[] data)
+		public async Task ExecuteAsync(CommandContext context, params string[] data)
 		{
 			await context.Channel.SendMessageAsync(string.Join(" ", data));
 		}
