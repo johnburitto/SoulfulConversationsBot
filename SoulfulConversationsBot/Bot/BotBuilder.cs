@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
+using Microsoft.Extensions.Logging.Abstractions;
 using SoulfulConversationsBot.Configuration;
 using SoulfulConversationsBot.Dto;
 using SoulfulConversationsBot.Profiles;
@@ -30,7 +31,7 @@ namespace SoulfulConversationsBot.Bot
 			{
 				configuration.AddProfile(new DiscordConfigurationProfile());
 				configuration.AddProfile(new CommandsNextConfigurationProfile());
-			}));
+			}, new NullLoggerFactory()));
 
 			return this;
 		}
