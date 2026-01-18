@@ -5,74 +5,74 @@ using SoulfulConversationsBot.Dto;
 
 namespace SoulfulConversationsBot.Configuration
 {
-    public static class ConfigurationManager
-    {
-        private static IConfiguration? _configuration;
-        private static IServiceCollection? _serviceCollection;
-        private static IServiceProvider? _serviceProvider;
-        private static object _lock = new object();
+	public static class ConfigurationManager
+	{
+		private static IConfiguration? _configuration;
+		private static IServiceCollection? _serviceCollection;
+		private static IServiceProvider? _serviceProvider;
+		private static object _lock = new object();
 
-        public static IConfiguration Configuration => GetConfiguration();
-        public static IServiceCollection ServiceCollection => GetServiceCollection();
-        public static IServiceProvider ServiceProvider => GetServiceProvider();
+		public static IConfiguration Configuration => GetConfiguration();
+		public static IServiceCollection ServiceCollection => GetServiceCollection();
+		public static IServiceProvider ServiceProvider => GetServiceProvider();
 
-        private static IConfiguration GetConfiguration()
-        {
-            if (_configuration == null)
-            {
-                lock (_lock)
-                {
-                    _configuration = new ConfigurationBuilder()
-                        .SetBasePath(Directory.GetCurrentDirectory())
-                        .AddJsonFile("appsettings.json", optional: false)
-                        .Build();
-                }
-            }
+		private static IConfiguration GetConfiguration()
+		{
+			if (_configuration == null)
+			{
+				lock (_lock)
+				{
+					_configuration = new ConfigurationBuilder()
+						.SetBasePath(Directory.GetCurrentDirectory())
+						.AddJsonFile("appsettings.json", optional: false)
+						.Build();
+				}
+			}
 
-            return _configuration;
-        }
+			return _configuration;
+		}
 
-        private static IServiceCollection GetServiceCollection()
-        {
-            if (_serviceCollection == null)
-            {
-                lock (_lock)
-                {
-                    _serviceCollection = new ServiceCollection();
-                }
-            }
+		private static IServiceCollection GetServiceCollection()
+		{
+			if (_serviceCollection == null)
+			{
+				lock (_lock)
+				{
+					_serviceCollection = new ServiceCollection();
+				}
+			}
 
-            return _serviceCollection;
-        }
+			return _serviceCollection;
+		}
 
-        private static IServiceProvider GetServiceProvider()
-        {
-            if (_serviceProvider == null)
-            {
-                lock (_lock)
-                {
-                    _serviceProvider = ServiceCollection.BuildServiceProvider();
-                }
-            }
+		private static IServiceProvider GetServiceProvider()
+		{
+			if (_serviceProvider == null)
+			{
+				lock (_lock)
+				{
+					_serviceProvider = ServiceCollection.BuildServiceProvider();
+				}
+			}
 
-            return _serviceProvider;
-        }
+			return _serviceProvider;
+		}
 
-        public static void Configure()
-        {
-            ServiceCollection.Configure<BotConfigurationDto>(options => Configuration.GetSection("BotConfigurationDto").Bind(options));
-            ServiceCollection.Configure<CommandsConfiguration>(options => Configuration.GetSection("CommandsConfiguration").Bind(options));
-            ServiceCollection.Configure<ImagesDto>(options => Configuration.GetSection("ImagesDto").Bind(options));
-        }
+		public static void Configure()
+		{
+			ServiceCollection.Configure<BotConfigurationDto>(options => Configuration.GetSection("BotConfigurationDto").Bind(options));
+			ServiceCollection.Configure<CommandsConfiguration>(options => Configuration.GetSection("CommandsConfiguration").Bind(options));
+			ServiceCollection.Configure<ImagesDto>(options => Configuration.GetSection("ImagesDto").Bind(options));
+		}
 
-        public static T? GetValue<T>(string section)
-        {
-            return Configuration.GetValue<T>(section);
-        }
+		public static T? GetValue<T>(string section)
+		{
+			return Configuration.GetValue<T>(section);
+		}
 
-        public static IOptions<T>? GetOptions<T>() where T : class
-        {
-            return ServiceProvider.GetService<IOptions<T>>();
-        }
-    }
+		public static IOptions<T>? GetOptions<T>() where T : class
+		{
+			return ServiceProvider.GetService<IOptions<T>>();
+		}
+	}
 }

@@ -4,11 +4,11 @@ using SoulfulConversationsBot.Dto;
 
 namespace SoulfulConversationsBot.Profiles
 {
-    public class CommandsNextConfigurationProfile : Profile
-    {
-        public CommandsNextConfigurationProfile() 
-        {
-            CreateMap<CommandsConfiguration, CommandsNextConfiguration>();
-        }
-    }
+	public class CommandsNextConfigurationProfile : Profile
+	{
+		public CommandsNextConfigurationProfile() 
+		{
+			CreateMap<CommandsConfiguration, CommandsNextConfiguration>();
+		}
+	}
 }
