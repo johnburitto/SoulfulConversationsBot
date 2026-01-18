@@ -1,49 +1,81 @@
-﻿using DSharpPlus;
+﻿using System.Data;
+using System.Reflection;
+
+using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Interactivity.Extensions;
-using System.Data;
-using System.Reflection;
 
 namespace SoulfulConversationsBot.Bot
 {
-    public class DiscordBot
-    {
-        private DiscordClient? _bot;
-        private CommandsNextExtension? _commands;
+	/// <summary>
+	/// Discrod bot.
+	/// </summary>
+	public class DiscordBot
+	{
+		#region Private Fields
 
-        public void Configure(DiscordConfiguration? configuration)
-        {
-            _bot = new DiscordClient(configuration);
+		/// <summary>
+		/// Discord client.
+		/// </summary>
+		private DiscordClient? _bot;
+		
+		/// <summary>
+		/// Commands.
+		/// </summary>
+		private CommandsNextExtension? _commands;
 
-            _bot.UseInteractivity(new()
-            {
-                Timeout = TimeSpan.FromMinutes(2)
-            });
-        }
+		#endregion
 
-        public void ConfigureCommands(CommandsNextConfiguration? configuration)
-        {
-            _commands = _bot?.UseCommandsNext(configuration ?? throw new ArgumentNullException(nameof(configuration)));
+		#region Public Methods
 
-            List<Type> commandList = GetCommands();
+		/// <summary>
+		/// Configures the bot.
+		/// </summary>
+		/// <param name="configuration">Bot configuration.</param>
+		public void Configure(DiscordConfiguration? configuration)
+		{
+			_bot = new DiscordClient(configuration);
 
-            foreach (Type command in commandList)
-            {
-                _commands?.RegisterCommands(command);
-            }
+			_bot.UseInteractivity(new()
+			{
+				Timeout = TimeSpan.FromMinutes(2)
+			});
+		}
 
-        }
+		/// <summary>
+		/// Configures the commands.
+		/// </summary>
+		/// <param name="configuration">Commands configuration</param>
+		public void ConfigureCommands(CommandsNextConfiguration configuration)
+		{
+			_commands = _bot?.UseCommandsNext(configuration);
 
-        public async Task Start()
-        {
-            await _bot!.ConnectAsync();
-        }
+			List<Type> commandList = GetCommands();
 
-        private List<Type> GetCommands()
-        {
-            return Assembly.GetExecutingAssembly().GetTypes()
-                .Where(t => String.Equals(t.Namespace, "SoulfulConversationsBot.Commands", StringComparison.Ordinal) && t.Name.EndsWith("Command"))
-                .ToList();
-        }
-    }
+			foreach (Type command in commandList)
+			{
+				_commands?.RegisterCommands(command);
+			}
+		}
+
+		/// <summary>
+		/// Starts the bot.
+		/// </summary>
+		public async Task Start()
+			=> await _bot!.ConnectAsync();
+
+		#endregion
+
+		#region Private Methods
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		private static List<Type> GetCommands()
+			=> [.. Assembly.GetExecutingAssembly().GetTypes()
+				.Where(t => String.Equals(t.Namespace, "SoulfulConversationsBot.Commands", StringComparison.Ordinal) && t.Name.EndsWith("Command"))];
+
+		#endregion
+	}
 }

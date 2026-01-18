@@ -1,29 +1,59 @@
-﻿using DSharpPlus.CommandsNext;
+﻿using DSharpPlus.Entities;
+using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.Entities;
-using SoulfulConversationsBot.Configuration;
+
 using SoulfulConversationsBot.Dto;
+using SoulfulConversationsBot.Configuration;
 
 namespace SoulfulConversationsBot.Commands
 {
-    public class CoinFlipCommand : BaseCommandModule
-    {
-        private readonly Random _rng = new Random();
-        private ImagesDto _imagesDto;
+	/// <summary>
+	/// Coin flip command.
+	/// </summary>
+	public class CoinFlipCommand : BaseCommandModule
+	{
+		#region Private Fields
 
-        public CoinFlipCommand()
-        {
-            _imagesDto = ConfigurationManager.GetOptions<ImagesDto>()!.Value;
-        }
+		/// <summary>
+		/// Randomizer.
+		/// </summary>
+		private readonly Random _rng = new();
 
-        [Command("coinflip")]
-        public async Task ExecuteAsync(CommandContext context)
-        {
-            var embedMessage = new DiscordEmbedBuilder().WithTitle("Чарівна монетка показала")
-                                                        .WithImageUrl(_rng.Next(2) == 0 ? _imagesDto[Image.CoinTail]
-                                                                                        : _imagesDto[Image.CoinHead]);
+		/// <summary>
+		/// Images dto.
+		/// </summary>
+		private readonly ImagesDto _imagesDto;
 
-            await context.Channel.SendMessageAsync(embed: embedMessage);
-        }
-    }
+		#endregion
+
+		#region Constructor
+
+		/// <summary>
+		/// Creates a new instance of <see cref="CoinFlipCommand"/> class.
+		/// </summary>
+		public CoinFlipCommand()
+		{
+			_imagesDto = ConfigurationManager.GetOptions<ImagesDto>()!.Value;
+		}
+
+		#endregion
+
+		#region Public Methods
+
+		/// <summary>
+		/// Executes the command.
+		/// </summary>
+		/// <param name="context">Context.</param>
+		[Command("coinflip")]
+		public async Task ExecuteAsync(CommandContext context)
+		{
+			var embedMessage = new DiscordEmbedBuilder().WithTitle("Чарівна монетка показала")
+														.WithImageUrl(_rng.Next(2) == 0 ? _imagesDto[Image.CoinTail]
+																						: _imagesDto[Image.CoinHead]);
+
+			await context.Channel.SendMessageAsync(embed: embedMessage);
+		}
+
+		#endregion
+	}
 }

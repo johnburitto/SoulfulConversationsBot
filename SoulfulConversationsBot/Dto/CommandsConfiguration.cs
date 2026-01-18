@@ -1,10 +1,28 @@
 ﻿namespace SoulfulConversationsBot.Dto
 {
-    public class CommandsConfiguration
-    {
-        public IEnumerable<string>? StringPrefixes { get; set;}
-        public bool EnableMentionPrefix { get; set;}
-        public bool EnableDms { get; set;}
-        public bool EnableDefaultHelp { get; set;}
-    }
+	/// <summary>
+	/// Commands configuration.
+	/// </summary>
+	public class CommandsConfiguration
+	{
+		/// <summary>
+		/// Gets or sets tring prefixes.
+		/// </summary>
+		public IEnumerable<string>? StringPrefixes { get; set;}
+
+		/// <summary>
+		/// Gets or sets whether to enable mention prefix.
+		/// </summary>
+		public bool EnableMentionPrefix { get; set;}
+
+		/// <summary>
+		/// Gets or sets whether to enable DMs.
+		/// </summary>
+		public bool EnableDms { get; set;}
+
+		/// <summary>
+		/// Gets or sets whether to enable default help command.
+		/// </summary>
+		public bool EnableDefaultHelp { get; set;}
+	}
 }

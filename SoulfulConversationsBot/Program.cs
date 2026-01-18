@@ -3,10 +3,10 @@
 var builder = new BotBuilder();
 
 builder.ConfigureSystem()
-       .ConfigureAutoMapper();
+	.ConfigureAutoMapper();
 
 builder.ConfigureBot()
-       .ConfigureCommands();
+	.ConfigureCommands();
 
 var bot = builder.Build();
 

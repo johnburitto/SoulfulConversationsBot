@@ -2,42 +2,93 @@
 
 namespace SoulfulConversationsBot.Utils
 {
-    public class JsonDictionaryManager<TKey, TValue> where TKey : notnull
-    {
-        private Dictionary<TKey, TValue> _data;
-        private string _filePath = Directory.GetCurrentDirectory();
+	/// <summary>
+	/// Json Dictionary Manager
+	/// </summary>
+	/// <typeparam name="TKey">Key type.</typeparam>
+	/// <typeparam name="TValue">Value type.</typeparam>
+	public class JsonDictionaryManager<TKey, TValue> where TKey : notnull
+	{
+		#region Private Fields
 
-        public Dictionary<TKey, TValue> Data => _data;
+		/// <summary>
+		/// Data dictionary.
+		/// </summary>
+		private readonly Dictionary<TKey, TValue> _data;
 
-        public JsonDictionaryManager(string fileName)
-        {
-            _filePath += $"/{fileName}";
-            _data = Read();
-        }
+		/// <summary>
+		/// Base file path.
+		/// </summary>
+		private readonly string _filePath = Directory.GetCurrentDirectory();
 
-        public void AddValue(TKey key, TValue value)
-        {
-            _data.TryAdd(key, value);
-        }
+		#endregion
 
-        public void SaveChanges()
-        {
-            File.WriteAllText(_filePath, JsonConvert.SerializeObject(_data));
-        }
+		#region Public Properties
 
-        private Dictionary<TKey, TValue> Read()
-        {
-            CheckFile();
+		/// <summary>
+		/// Data dictionary.
+		/// </summary>
+		public Dictionary<TKey, TValue> Data => _data;
 
-            return JsonConvert.DeserializeObject<Dictionary<TKey, TValue>>(File.ReadAllText(_filePath)) ?? new();
-        }
+		#endregion
 
-        private void CheckFile()
-        {
-            if (!File.Exists(_filePath))
-            {
-                File.Create(_filePath).Close();
-            }
-        }
-    }
+		#region Constructor
+
+		/// <summary>
+		/// Creates a new instance of <see cref="JsonDictionaryManager{TKey, TValue}"/> class.
+		/// </summary>
+		/// <param name="fileName"></param>
+		public JsonDictionaryManager(string fileName)
+		{
+			_filePath += $"/{fileName}";
+			_data = Read();
+		}
+
+		#endregion
+
+		#region Public Methods
+
+		/// <summary>
+		/// Adds value to dictionary.
+		/// </summary>
+		/// <param name="key">Key.</param>
+		/// <param name="value">Value/</param>
+
+		public void AddValue(TKey key, TValue value)
+			=> _data.TryAdd(key, value);
+
+		/// <summary>
+		/// Saves changes to file.
+		/// </summary>
+		public void SaveChanges()
+			=> File.WriteAllText(_filePath, JsonConvert.SerializeObject(_data));
+
+		#endregion
+
+		#region Private Methods
+
+		/// <summary>
+		/// Reads data from file.
+		/// </summary>
+		/// <returns>Readed data.</returns>
+		private Dictionary<TKey, TValue> Read()
+		{
+			CheckFile();
+
+			return JsonConvert.DeserializeObject<Dictionary<TKey, TValue>>(File.ReadAllText(_filePath)) ?? new();
+		}
+
+		/// <summary>
+		/// Checks if file exists, if not creates it.
+		/// </summary>
+		private void CheckFile()
+		{
+			if (!File.Exists(_filePath))
+			{
+				File.Create(_filePath).Close();
+			}
+		}
+
+		#endregion
+	}
 }

@@ -1,63 +1,110 @@
 ﻿using AutoMapper;
+
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
-using SoulfulConversationsBot.Configuration;
+
+using Microsoft.Extensions.Logging.Abstractions;
+
 using SoulfulConversationsBot.Dto;
 using SoulfulConversationsBot.Profiles;
+using SoulfulConversationsBot.Configuration;
 
 namespace SoulfulConversationsBot.Bot
 {
-    public class BotBuilder
-    {
-        private DiscordBot _bot;
-        private IMapper? _mapper;
+	/// <summary>
+	/// Bot builde.
+	/// </summary>
+	public class BotBuilder
+	{
+		#region Private Fields
 
-        public BotBuilder() 
-        { 
-            _bot = new DiscordBot();
-        }
+		/// <summary>
+		/// Dscord bot.
+		/// </summary>
+		private DiscordBot _bot;
+		
+		/// <summary>
+		/// Mapper.
+		/// </summary>
+		private IMapper? _mapper;
 
-        public BotBuilder ConfigureSystem()
-        {
-            ConfigurationManager.Configure();
+		#endregion
 
-            return this;
-        }
+		#region Constructor
 
-        public BotBuilder ConfigureAutoMapper()
-        {
-            _mapper = new Mapper(new MapperConfiguration(configuration =>
-            {
-                configuration.AddProfile(new DiscordConfigurationProfile());
-                configuration.AddProfile(new CommandsNextConfigurationProfile());
-            }));
+		/// <summary>
+		/// Creates a new instance of the <see cref="BotBuilder"/> class.
+		/// </summary>
+		public BotBuilder() 
+		{ 
+			_bot = new DiscordBot();
+		}
 
-            return this;
-        }
+		#endregion
 
-        public BotBuilder ConfigureBot()
-        {
-            var configrationDto = ConfigurationManager.GetOptions<BotConfigurationDto>()?.Value;
-            var configuration = _mapper?.Map<DiscordConfiguration>(configrationDto);
+		#region Public Methods
 
-            _bot.Configure(configuration);
+		/// <summary>
+		/// Configures the system.
+		/// </summary>
+		/// <returns>Bot builder.</returns>
+		public BotBuilder ConfigureSystem()
+		{
+			ConfigurationManager.Configure();
 
-            return this;
-        }
-        
-        public BotBuilder ConfigureCommands()
-        {
-            var configrationDto = ConfigurationManager.GetOptions<CommandsConfiguration>()?.Value;
-            var configuration = _mapper?.Map<CommandsNextConfiguration>(configrationDto);
+			return this;
+		}
 
-            _bot.ConfigureCommands(configuration);
+		/// <summary>
+		/// Configures AutoMapper.
+		/// </summary>
+		/// <returns>Bot builder.</returns>
+		public BotBuilder ConfigureAutoMapper()
+		{
+			_mapper = new Mapper(new MapperConfiguration(configuration =>
+			{
+				configuration.AddProfile(new DiscordConfigurationProfile());
+				configuration.AddProfile(new CommandsNextConfigurationProfile());
+			}, new NullLoggerFactory()));
 
-            return this;
-        }
+			return this;
+		}
 
-        public DiscordBot Build()
-        {
-            return _bot;
-        }
-    }
+		/// <summary>
+		/// Configures the bot.
+		/// </summary>
+		/// <returns>Bot builder.</returns>
+		public BotBuilder ConfigureBot()
+		{
+			var configrationDto = ConfigurationManager.GetOptions<BotConfigurationDto>()?.Value;
+			var configuration = _mapper?.Map<DiscordConfiguration>(configrationDto);
+
+			_bot.Configure(configuration);
+
+			return this;
+		}
+
+		/// <summary>
+		/// Configures the commands.
+		/// </summary>
+		/// <returns>Bot builder.</returns>
+		public BotBuilder ConfigureCommands()
+		{
+			var configrationDto = ConfigurationManager.GetOptions<CommandsConfiguration>()?.Value;
+			var configuration = _mapper!.Map<CommandsNextConfiguration>(configrationDto);
+
+			_bot.ConfigureCommands(configuration);
+
+			return this;
+		}
+
+		/// <summary>
+		/// Builds bot.
+		/// </summary>
+		/// <returns>Discord bot.</returns>
+		public DiscordBot Build()
+			=> _bot;
+
+		#endregion
+	}
 }
